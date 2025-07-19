@@ -31,10 +31,6 @@ body {
   margin-bottom: 10px;
 }
 
-.highlight-word {
-  color: #ff003b;
-}
-
 /* chat window */
 .chatbox {
   margin: 40px 0;
@@ -148,7 +144,7 @@ body {
 }
 
 .site-logo {
-  max-width: 100%;
+  max-width: 40%; /* reduced from 100% to make it smaller */
   height: auto;
   display: block;
   margin: 0 auto;
