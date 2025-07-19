@@ -125,7 +125,7 @@ function displayMessage(message, sender) {
 
 // Function to call OpenAI API
 async function callOpenAI() {
-  const apiUrl = "https://api.openai.com/v1/chat/completions";
+  const apiUrl = "https://second-worker.cjmonkey3749.workers.dev/";
 
   // Prepare request body
   const requestBody = {
@@ -138,7 +138,6 @@ async function callOpenAI() {
   const response = await fetch(apiUrl, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${OPENAI_API_KEY}`, // This comes from secrets.js
       "Content-Type": "application/json",
     },
     body: JSON.stringify(requestBody),
