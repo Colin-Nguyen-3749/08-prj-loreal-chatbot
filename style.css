@@ -73,6 +73,7 @@ body {
   padding: 12px;
   border: 1px solid #ccc;
   font-size: 18px;
+  font-family: "Helvetica Now Display W05 Lt", sans-serif;
 }
 
 .chat-form input:focus {
