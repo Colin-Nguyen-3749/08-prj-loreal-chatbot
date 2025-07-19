@@ -31,6 +31,10 @@ body {
   margin-bottom: 10px;
 }
 
+.highlight-word {
+  color: #ff003b;
+}
+
 /* chat window */
 .chatbox {
   margin: 40px 0;
