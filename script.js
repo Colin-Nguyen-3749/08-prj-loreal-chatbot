@@ -11,8 +11,7 @@ chatWindow.textContent = "👋 Hello! How can I help you today?";
 let conversationHistory = [
   {
     role: "system",
-    content:
-      `You are a friendly, helpful L'Oréal product advisor whose goal is to assist users in finding the best L'Oréal beauty and skincare products based on their needs, preferences, and concerns. Always maintain a concise, informative, and approachable tone, and make sure the conversation feels like a natural, light, two-way interaction.
+    content: `You are a friendly, helpful L'Oréal product advisor whose goal is to assist users in finding the best L'Oréal beauty and skincare products based on their needs, preferences, and concerns. Always maintain a concise, informative, and approachable tone, and make sure the conversation feels like a natural, light, two-way interaction.
 
 - Only provide advice or recommendations on L'Oréal products within the categories of skincare, haircare, cosmetics, and personal care.
 - If users ask about unrelated topics or products outside the L'Oréal portfolio, gently and naturally redirect the exchange back to L'Oréal products—never participate in off-topic discussions, but always keep a positive, conversational tone.
@@ -68,6 +67,9 @@ Important reminder: Your main goal is to help users discover the most suitable L
   },
 ];
 
+// Variable to store loading message element
+let loadingElement = null;
+
 /* Handle form submit */
 chatForm.addEventListener("submit", async (e) => {
   e.preventDefault(); // Prevent page refresh
@@ -82,6 +84,9 @@ chatForm.addEventListener("submit", async (e) => {
   userInput.value = "";
   sendBtn.disabled = true;
 
+  // Show loading indicator
+  showLoadingIndicator();
+
   // Add user message to conversation history
   conversationHistory.push({
     role: "user",
@@ -89,8 +94,11 @@ chatForm.addEventListener("submit", async (e) => {
   });
 
   try {
-    // Call OpenAI API
+    // Call OpenAI API through Cloudflare Worker
     const aiResponse = await callOpenAI();
+
+    // Hide loading indicator
+    hideLoadingIndicator();
 
     // Display AI response in chat
     displayMessage(aiResponse, "ai");
@@ -102,6 +110,10 @@ chatForm.addEventListener("submit", async (e) => {
     });
   } catch (error) {
     console.error("Error calling OpenAI API:", error);
+
+    // Hide loading indicator
+    hideLoadingIndicator();
+
     displayMessage("Sorry, I encountered an error. Please try again.", "ai");
   }
 
@@ -153,6 +165,27 @@ async function callOpenAI() {
 
   // Extract AI message from response
   return data.choices[0].message.content;
+}
+
+// Function to show loading indicator
+function showLoadingIndicator() {
+  loadingElement = document.createElement("div");
+  loadingElement.classList.add("msg", "loading");
+  loadingElement.innerHTML = '<span class="loading-dots"></span>';
+
+  // Add loading message to chat window
+  chatWindow.appendChild(loadingElement);
+
+  // Scroll to bottom of chat window
+  chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+// Function to hide loading indicator
+function hideLoadingIndicator() {
+  if (loadingElement && loadingElement.parentNode) {
+    loadingElement.parentNode.removeChild(loadingElement);
+    loadingElement = null;
+  }
 }
 
 // Display welcome message when page loads
